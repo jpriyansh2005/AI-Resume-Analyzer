@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(147, 51, 234, 0.1) 25%, rgba(236, 72, 153, 0.25) 50%, rgba(147, 51, 234, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite linear;
+}
+
+@keyframes float-confetti {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(400px) rotate(360deg); opacity: 0; }
+}
+
+.animate-confetti {
+  animation: float-confetti 3s ease-in-out forwards;
+}
+
+/* Sticky report navigation styling */
+.sticky-report-nav {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  background-color: rgba(5, 11, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body {
+  background-color: #050b14;
+  color: #f3f4f6;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050b14;
+}
+::-webkit-scrollbar-thumb {
+  background: #111d33;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1d2e4d;
+}
+
+/* Glassmorphism custom components */
+.glass-panel {
+  background-color: rgba(13, 22, 38, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 1rem;
+}
+
+.glass-card {
+  background-color: rgba(13, 22, 38, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 0.75rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.glass-card:hover {
+  border-color: rgba(168, 85, 247, 0.2);
+  background-color: rgba(13, 22, 38, 0.6);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(168, 85, 247, 0.05);
+  transform: translateY(-0.25rem);
+}
+
+/* Print Styling for AI Resume PDF Report */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Hide interactive sidebars, buttons, etc. */
+  .no-print, 
+  aside, 
+  nav, 
+  button, 
+  .toast, 
+  .btn-action,
+  header {
+    display: none !important;
+  }
+  
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .glass-panel {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    color: #1a1a1a !important;
+    border-radius: 8px !important;
+    margin-bottom: 20px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .glass-card {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    color: #1a1a1a !important;
+    border-radius: 8px !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Force white backgrounds for readability */
+  .bg-\[\#050b14\]\/30,
+  .bg-white\/5,
+  .bg-\[\#0d1626\]\/60 {
+    background: #f1f5f9 !important;
+    color: #1a1a1a !important;
+  }
+
+  /* Standard text colors for printing */
+  .text-white {
+    color: #0f172a !important;
+  }
+  .text-gray-200, .text-gray-300, .text-gray-400, .text-gray-500 {
+    color: #334155 !important;
+  }
+
+  h1, h2, h3, h4 {
+    color: #0f172a !important;
+    page-break-after: avoid !important;
+  }
+
+  .border-white\/5, .border-white\/10 {
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Score color adjustments for paper readability */
+  .text-purple-400 {
+    color: #7c3aed !important;
+  }
+  .text-indigo-300, .text-indigo-400 {
+    color: #4f46e5 !important;
+  }
+  .text-green-300, .text-green-400 {
+    color: #16a34a !important;
+  }
+  .text-yellow-400 {
+    color: #d97706 !important;
+  }
+  .text-red-400 {
+    color: #dc2626 !important;
+  }
+
+  /* Force elements to page-break properly */
+  .page-break {
+    page-break-before: always !important;
+  }
+}
+
