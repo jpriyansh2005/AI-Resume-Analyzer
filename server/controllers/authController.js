@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../models/User.js';
 
 // Helper to generate JWT Token
@@ -15,6 +16,12 @@ const generateToken = (id) => {
 export const register = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
+    console.log('Register request received for:', email);
+
+    if (mongoose.connection.readyState !== 1) {
+      console.error('Database connection is not ready (readyState: ' + mongoose.connection.readyState + ')');
+      return res.status(503).json({ message: 'Database connection failed. Please try again later.' });
+    }
 
     if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: 'All fields are required' });
@@ -46,6 +53,7 @@ export const register = async (req, res) => {
     });
 
     if (user) {
+      console.log('User registered successfully:', email);
       res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -56,8 +64,8 @@ export const register = async (req, res) => {
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
-    console.error('Register Error:', error.message);
-    res.status(500).json({ message: 'Server error during registration' });
+    console.error('Registration Error:', error);
+    res.status(500).json({ message: 'Server error during registration: ' + error.message });
   }
 };
 
@@ -67,6 +75,12 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login request received for:', email);
+
+    if (mongoose.connection.readyState !== 1) {
+      console.error('Database connection is not ready (readyState: ' + mongoose.connection.readyState + ')');
+      return res.status(503).json({ message: 'Database connection failed. Please try again later.' });
+    }
 
     if (!email || !password) {
       return res.status(400).json({ message: 'Please provide email and password' });
@@ -84,6 +98,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
+    console.log('User logged in successfully:', email);
     res.json({
       _id: user._id,
       name: user.name,
@@ -91,8 +106,8 @@ export const login = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (error) {
-    console.error('Login Error:', error.message);
-    res.status(500).json({ message: 'Server error during login' });
+    console.error('Login Error:', error);
+    res.status(500).json({ message: 'Server error during login: ' + error.message });
   }
 };
 

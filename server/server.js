@@ -10,6 +10,20 @@ import resumeRoutes from './routes/resumeRoutes.js';
 // Load env variables
 dotenv.config();
 
+// Critical Environment Check
+const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error('FATAL ERROR: MONGODB_URI or MONGO_URI is not defined in environment variables.');
+  process.exit(1);
+}
+if (!process.env.JWT_SECRET) {
+  console.warn('WARNING: JWT_SECRET is not defined. Falling back to default secret.');
+}
+if (!process.env.GEMINI_API_KEY) {
+  console.warn('WARNING: GEMINI_API_KEY is not defined. AI Resume analysis features will fail.');
+}
+
+
 const app = express();
 
 // Ensure uploads directory exists
@@ -25,6 +39,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'https://ai-resume-analyzer-topaz-kappa.vercel.app',
+  process.env.CLIENT_URL,
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -68,13 +83,12 @@ app.use((err, req, res, next) => {
 
 // Port configuration
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ai-resume-analyzer';
 
 // Database & Server startup
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log('MongoDB connected successfully');
+    console.log('MongoDB connected successfully to production cluster');
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });

@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Registration failed Context:', error);
       return {
         success: false,
-        message: error.response?.data?.message || 'Registration failed. Please try again.',
+        message: error.response?.data?.message || (error.code === 'ERR_NETWORK' || !error.response ? 'Server is offline or database is unreachable. Please try again later.' : 'Registration failed. Please try again.'),
       };
     } finally {
       setLoading(false);
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Login failed Context:', error);
       return {
         success: false,
-        message: error.response?.data?.message || 'Invalid email or password.',
+        message: error.response?.data?.message || (error.code === 'ERR_NETWORK' || !error.response ? 'Server is offline or database is unreachable. Please try again later.' : 'Invalid email or password.'),
       };
     } finally {
       setLoading(false);
