@@ -56,7 +56,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.options('*', cors());
+app.options(/(.*)/, cors());
 
 // Route mounts
 app.use('/api/auth', authRoutes);
